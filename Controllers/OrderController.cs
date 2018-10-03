@@ -36,7 +36,7 @@ namespace Advantage.API.Controllers
             return Ok (response);
         }
 
-        [HttpGet("ByState")]
+        [HttpGet ("ByState")]
         public IActionResult ByState ()
         {
             var orders = _ctx.Orders.Include (o => o.Customer).AsEnumerable ();
@@ -53,31 +53,31 @@ namespace Advantage.API.Controllers
             return Ok (groupedResult);
         }
 
-        [HttpGet("ByCustomer/{n}")]
-        public IActionResult ByState(int n)
+        [HttpGet ("ByCustomer/{n}")]
+        public IActionResult ByState (int n)
         {
-            var orders = _ctx.Orders.Include(o => o.Customer).AsEnumerable();
+            var orders = _ctx.Orders.Include (o => o.Customer).AsEnumerable ();
 
-            var groupedResult = orders.GroupBy(o => o.Customer.Id)
+            var groupedResult = orders.GroupBy (o => o.Customer.Id)
                 .AsEnumerable ()
                 .Select (grp => new
                 {
-                    Name = _ctx.Customers.Find(grp.Key).Name,
-                    Total = grp.Sum(x => x.Total)
-                }).OrderByDescending(res => res.Total)
-                .Take(n)
-                .ToList();
+                    Name = _ctx.Customers.Find (grp.Key).Name,
+                        Total = grp.Sum (x => x.Total)
+                }).OrderByDescending (res => res.Total)
+                .Take (n)
+                .ToList ();
 
             return Ok (groupedResult);
         }
 
-        [HttpGet("GetOrder/{id}", Name = "GetOrder")]
-        public IActionResult GetOrder(int id)
+        [HttpGet ("GetOrder/{id}", Name = "GetOrder")]
+        public IActionResult GetOrder (int id)
         {
-            var order = _ctx.Orders.Include(o => o.Customer)
-                .First(o => o.Id == id);
+            var order = _ctx.Orders.Include (o => o.Customer)
+                .First (o => o.Id == id);
 
-            return Ok(order);
+            return Ok (order);
         }
     }
 }
